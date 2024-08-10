@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple To-Do List</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #task-list { list-style-type: none; padding: 0; }
+        .task-item { padding: 10px; border-bottom: 1px solid #ddd; }
+        .task-item .edit-input { display: none; }
+    </style>
+</head>
+<body>
+
+<h2>To-Do List</h2>
+<input type="text" id="new-task" placeholder="Enter a new task">
+<button onclick="addTask()">Add</button>
+
+<ul id="task-list">
+</ul>
+
+<script>
+function addTask() {
+    const taskInput = document.getElementById('new-task');
+    const taskList = document.getElementById('task-list');
+
+    if (taskInput.value === '') return;
+
+    const li = document.createElement('li');
+    li.className = 'task-item';
+    li.innerHTML = `
+        <span>${taskInput.value}</span>
+        <input class="edit-input" type="text" value="${taskInput.value}">
+        <button class="edit-btn" onclick="editTask(this)">Edit</button>
+        <button class="delete-btn" onclick="deleteTask(this)">Delete</button>
+    `;
+    taskList.appendChild(li);
+    taskInput.value = '';
+}
+
+function editTask(button) {
+    const li = button.parentElement;
+    const span = li.querySelector('span');
+    const input = li.querySelector('.edit-input');
+    const isEditing = input.style.display === 'block';
+
+    if (isEditing) {
+        span.textContent = input.value;
+        input.style.display = 'none';
+        button.textContent = 'Edit';
+    } else {
+        input.style.display = 'block';
+        input.focus();
+        button.textContent = 'Save';
+    }
+}
+
+function deleteTask(button) {
+    const li = button.parentElement;
+    li.remove();
+}
+</script>
+
+</body>
+</html>
